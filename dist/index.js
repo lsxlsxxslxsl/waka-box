@@ -864,8 +864,8 @@ module.exports = (function(e, t) {
         const { name: i, percent: s, text: o } = n;
         const a = [
           i.padEnd(11),
-          o.padEnd(14),
-          generateBarChart(s, 21),
+          o.padEnd(14) + " ",
+          unicodeProgressBar(s + 15),
           String(s.toFixed(1)).padStart(5) + "%"
         ];
         r.push(a.join(" "));
