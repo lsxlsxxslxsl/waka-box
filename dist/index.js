@@ -840,11 +840,7 @@ module.exports = (function(e, t) {
     r(63).config();
     const { WakaTimeClient: n, RANGE: i } = r(650);
     const s = r(0);
-    const {
-      GIST_ID: o = "6b075fb824fd9949ffb0bd497d10950e",
-      GH_TOKEN: a = "711d28fae8a72f8bdeb018ed3498ebd038e696cb",
-      WAKATIME_API_KEY: u = "acc5b4b8-03ef-4456-95ef-b2368993d100"
-    } = process.env;
+    const { GIST_ID: o, GH_TOKEN: a, WAKATIME_API_KEY: u } = process.env;
     const p = new n(u);
     const c = new s({ auth: `token ${a}` });
     async function main() {
