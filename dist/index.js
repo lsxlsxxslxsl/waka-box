@@ -855,18 +855,17 @@ module.exports = (function(e, t) {
         console.error(`Unable to get gist\n${e}`);
       }
       const r = [];
-      for (let t = 0; t < Math.min(e.data.languages.length, 5); t++) {
+      for (let t = 0; t < Math.min(e.data.languages.length, 4); t++) {
         const n = e.data.languages[t];
         const { name: i, percent: s, text: o } = n;
         const a = [
           i.padEnd(11),
-          o.padEnd(14) + " ",
+          o.padStart(14) + " ",
           unicodeProgressBar(s + 15),
           String(s.toFixed(1)).padStart(5) + "%"
         ];
         r.push(a.join(" "));
       }
-      if (r.length == 0) return;
       try {
         const e = Object.keys(t.data.files)[0];
         await c.gists.update({
@@ -882,17 +881,53 @@ module.exports = (function(e, t) {
         console.error(`Unable to update gist\n${e}`);
       }
     }
-    function generateBarChart(e, t) {
-      const r = "░▏▎▍▌▋▊▉█";
-      const n = Math.floor((t * 8 * e) / 100);
-      const i = Math.floor(n / 8);
-      if (i >= t) {
-        return r.substring(8, 9).repeat(t);
+    const d = [
+      "▁▂▃▄▅▆▇█",
+      "⣀⣄⣤⣦⣶⣷⣿",
+      "⣀⣄⣆⣇⣧⣷⣿",
+      "○◔◐◕⬤",
+      "□◱◧▣■",
+      "□◱▨▩■",
+      "□◱▥▦■",
+      "░▒▓█",
+      "░█",
+      "⬜⬛",
+      "⬛⬜",
+      "▱▰",
+      "▭◼",
+      "▯▮",
+      "◯⬤",
+      "⚪⚫"
+    ];
+    function unicodeProgressBar(e, t = 7, r = 20, n = 20) {
+      let i;
+      let s;
+      let o;
+      let a;
+      let u;
+      let p;
+      let c;
+      let l = Number.POSITIVE_INFINITY;
+      const g = d[t];
+      const m = g[g.length - 1];
+      const h = g.length - 1;
+      if (e === 100) return m.repeat(n);
+      e = e / 100;
+      for (let t = n; t >= r; t--) {
+        c = e * t;
+        s = Math.floor(c);
+        p = c - s;
+        a = Math.floor(p * h);
+        if (e !== 0 && s === 0 && a === 0) a = 1;
+        i = Math.abs(e - (s + a / h) / t) * 100;
+        if (i < l) {
+          l = i;
+          o = g[a];
+          if (s === t) o = "";
+          u = m.repeat(s) + o + g[0].repeat(t - s - 1);
+        }
       }
-      const s = n % 8;
-      return [r.substring(8, 9).repeat(i), r.substring(s, s + 1)]
-        .join("")
-        .padEnd(t, r.substring(0, 1));
+      return u;
     }
     (async () => {
       await main();
